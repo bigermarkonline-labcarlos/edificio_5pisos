@@ -511,7 +511,7 @@
       renderer.setPixelRatio(isSoftwareGl ? 1 : Math.min(window.devicePixelRatio || 1, 2));
       renderer.outputEncoding = THREE.sRGBEncoding;
       renderer.toneMapping = THREE.ACESFilmicToneMapping;
-      renderer.toneMappingExposure = 1.06;
+      renderer.toneMappingExposure = 1.12;
       renderer.shadowMap.enabled = !isSoftwareGl;
       renderer.shadowMap.type = THREE.PCFSoftShadowMap;
       viewport.appendChild(renderer.domElement);
@@ -526,9 +526,9 @@
        * 2. ESCENA, CÁMARA, CONTROLES E ILUMINACIÓN DE ESTUDIO/EXTERIOR
        * ----------------------------------------------------------- */
       var scene = new THREE.Scene();
-      var SKY_COLOR = 0xd6e6f2;
+      var SKY_COLOR = 0xe2edf5;
       scene.background = new THREE.Color(SKY_COLOR);
-      scene.fog = new THREE.FogExp2(SKY_COLOR, 0.0082);
+      scene.fog = new THREE.FogExp2(SKY_COLOR, 0.0065);
 
       var isMobileViewport = window.matchMedia('(max-width: 720px)').matches;
       var camera = new THREE.PerspectiveCamera(isMobileViewport ? 48 : 42, window.innerWidth / window.innerHeight, 0.1, 260);
@@ -579,15 +579,15 @@
       })();
 
       // Iluminación equilibrada cálida/fría (máx. 1 generador de sombras principal)
-      var hemiLight = new THREE.HemisphereLight(0xd9ecff, 0x5c6e38, 0.78);
+      var hemiLight = new THREE.HemisphereLight(0xeaf6ff, 0x667443, 1.12);
       hemiLight.position.set(0, 30, 0);
       scene.add(hemiLight);
 
-      var sunLight = new THREE.DirectionalLight(0xfff4e0, 1.32);
-      sunLight.position.set(14, 22, 13);
+      var sunLight = new THREE.DirectionalLight(0xfff1d1, 2.15);
+      sunLight.position.set(18, 28, 16);
       sunLight.castShadow = !isSoftwareGl;
-      sunLight.shadow.mapSize.width = 2048;
-      sunLight.shadow.mapSize.height = 2048;
+      sunLight.shadow.mapSize.width = isSoftwareGl ? 1024 : 4096;
+      sunLight.shadow.mapSize.height = isSoftwareGl ? 1024 : 4096;
       sunLight.shadow.camera.near = 2;
       sunLight.shadow.camera.far = 65;
       sunLight.shadow.camera.left = -14;
@@ -598,7 +598,7 @@
       sunLight.shadow.normalBias = 0.025;
       scene.add(sunLight);
 
-      var fillLight = new THREE.DirectionalLight(0xbcd8f5, 0.42);
+      var fillLight = new THREE.DirectionalLight(0xbcdcff, 0.58);
       fillLight.position.set(-14, 12, -10);
       scene.add(fillLight);
 
@@ -622,12 +622,12 @@
 
       // Césped natural del entorno
       var grassTex = makeCanvasTex(256, function (ctx, s) {
-        ctx.fillStyle = '#647f35';
+        ctx.fillStyle = '#667d3c';
         ctx.fillRect(0, 0, s, s);
-        for (var i = 0; i < 4200; i++) {
+        for (var i = 0; i < 6200; i++) {
           var x = (Math.sin(i * 12.9898) * 43758.5453 % 1 + 1) % 1 * s;
           var y = (Math.sin(i * 78.233) * 43758.5453 % 1 + 1) % 1 * s;
-          var shade = i % 3 === 0 ? '#728e3d' : (i % 3 === 1 ? '#57702b' : '#6c8839');
+          var shade = i % 4 === 0 ? '#829d48' : (i % 4 === 1 ? '#5d7430' : (i % 4 === 2 ? '#738f3f' : '#4f692a'));
           ctx.fillStyle = shade;
           ctx.fillRect(x, y, 2, 4);
         }
@@ -693,9 +693,9 @@
       }, 2, 1);
 
       // Materiales compartidos
-      var matGrass = new THREE.MeshStandardMaterial({ map: grassTex, roughness: 0.94, metalness: 0.0 });
+      var matGrass = new THREE.MeshStandardMaterial({ map: grassTex, roughness: 0.82, metalness: 0.0 });
       var matLotGreen = new THREE.MeshStandardMaterial({ color: 0x5c7a32, roughness: 0.9, metalness: 0.0 });
-      var matLotConcrete = new THREE.MeshStandardMaterial({ map: concreteTex, color: 0xb2b6b8, roughness: 0.86, metalness: 0.04 });
+      var matLotConcrete = new THREE.MeshStandardMaterial({ map: concreteTex, color: 0xc2c5c5, roughness: 0.68, metalness: 0.03 });
       var matFloorSlab = new THREE.MeshStandardMaterial({ map: concreteTex, color: 0x898e92, roughness: 0.82, metalness: 0.05 });
       var matSlabEdge = new THREE.MeshStandardMaterial({ color: 0x767b80, roughness: 0.85, metalness: 0.05 });
       var matColumn = new THREE.MeshStandardMaterial({ color: 0x7b7168, roughness: 0.84, metalness: 0.05 });
@@ -706,8 +706,8 @@
         var m = new THREE.MeshStandardMaterial({
           map: stuccoTex,
           color: colorHex || 0x967e6e,
-          roughness: 0.86,
-          metalness: 0.03,
+          roughness: 0.76,
+          metalness: 0.02,
           transparent: false,
           opacity: 1.0,
           depthWrite: true
@@ -728,11 +728,14 @@
 
       // Vidrios semitransparentes azulados y marcos blancos
       var matGlass = new THREE.MeshPhysicalMaterial({
-        color: 0x67b3e6,
-        roughness: 0.08,
-        metalness: 0.14,
+        color: 0x74b6d9,
+        roughness: 0.05,
+        metalness: 0.08,
+        clearcoat: 1.0,
+        clearcoatRoughness: 0.08,
+        reflectivity: 0.65,
         transparent: true,
-        opacity: 0.42,
+        opacity: 0.34,
         side: THREE.DoubleSide,
         depthWrite: false
       });
@@ -756,11 +759,11 @@
 
       // Material animado para el agua turquesa del Jacuzzi
       var matJacuzziWater = new THREE.MeshStandardMaterial({
-        color: 0x14cde0,
-        emissive: 0x065c6b,
-        emissiveIntensity: 0.38,
-        roughness: 0.12,
-        metalness: 0.22,
+        color: 0x27d7e9,
+        emissive: 0x087b8a,
+        emissiveIntensity: 0.18,
+        roughness: 0.055,
+        metalness: 0.32,
         transparent: true,
         opacity: 0.86
       });
