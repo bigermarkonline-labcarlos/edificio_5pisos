@@ -1,0 +1,6 @@
+{
+  "name": "Maqueta 3D Edificio Multifamiliar 5 Niveles",
+  "description": "Maqueta arquitectónica 3D interactiva de un edificio multifamiliar de 5 niveles en lote de 6m x 17m con antejardín de 2.40m, cortes por nivel, modo Rayos X, ductos de luz y terraza con pérgola, BBQ y jacuzzi.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
