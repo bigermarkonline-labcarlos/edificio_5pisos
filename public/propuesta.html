@@ -9,6 +9,18 @@
     <style>
         body { font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; background-color: #0f172a; color: #f8fafc; }
         .glass-panel { background: rgba(30, 41, 59, 0.7); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.1); }
+        @media (max-width: 640px) {
+            header .max-w-6xl { padding-left: 16px; padding-right: 16px; gap: 12px; }
+            header h1 { font-size: 14px; line-height: 1.25; }
+            header a { white-space: nowrap; flex-shrink: 0; }
+            main { padding-left: 16px !important; padding-right: 16px !important; padding-top: 24px !important; }
+            #visor-container { height: 420px; }
+            #overlay-controls { padding: 20px 16px; }
+            #overlay-controls h3 { font-size: 22px; }
+            #overlay-controls > div { width: 100%; flex-direction: column; }
+            #overlay-controls > div a { width: 100%; justify-content: center; }
+            .glass-panel img { height: 220px; }
+        }
     </style>
 </head>
 <body class="antialiased selection:bg-amber-500 selection:text-white">
