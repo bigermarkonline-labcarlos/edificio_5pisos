@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Propuesta Arquitectónica | Edificio 5 Pisos</title>
+    <!-- Cargamos Tailwind CSS para diseño ejecutivo instantáneo -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body { font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; background-color: #0f172a; color: #f8fafc; }
+        .glass-panel { background: rgba(30, 41, 59, 0.7); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.1); }
+    </style>
+</head>
+<body class="antialiased selection:bg-amber-500 selection:text-white">
+
+    <!-- ENCABEZADO EJECUTIVO -->
+    <header class="border-b border-slate-800 bg-slate-900/90 sticky top-0 z-50 backdrop-blur-md">
+        <div class="max-w-6xl mx-auto px-6 py-4 flex justify-between items-center">
+            <div>
+                <span class="text-xs font-bold tracking-widest text-amber-400 uppercase">Presentación de Proyecto</span>
+                <h1 class="text-xl font-bold text-white">Edificio Residencial & Zona Social (5 Pisos)</h1>
+            </div>
+            <a href="https://edificio-5pisos.vercel.app/" target="_blank" rel="noopener noreferrer" 
+               class="text-xs bg-slate-800 hover:bg-slate-700 text-slate-200 px-4 py-2 rounded-lg border border-slate-700 transition">
+                Abrir App Externa ↗
+            </a>
+        </div>
+    </header>
+
+    <main class="max-w-6xl mx-auto px-6 py-10 space-y-12">
+
+        <!-- SECCIÓN 1: VISOR 3D INTERACTIVO BAJO DEMANDA -->
+        <section class="space-y-4">
+            <div class="flex flex-col md:flex-row md:items-end justify-between gap-4">
+                <div>
+                    <h2 class="text-2xl font-bold text-white">1. Exploración Exterior Interactivo 3D</h2>
+                    <p class="text-slate-400 text-sm mt-1">Inspeccione la volumetría, fachada y distribución exterior en tiempo real.</p>
+                </div>
+            </div>
+
+            <!-- Contenedor del Visor (Portada + Botón) -->
+            <div id="visor-container" class="relative w-full h-[520px] rounded-2xl overflow-hidden border border-slate-700 shadow-2xl bg-slate-900">
+                
+                <!-- Imagen de Portada (Render principal del edificio) -->
+                <img id="cover-image" 
+                     src="https://edificio-5pisos.vercel.app/assets/aistudio/Edificio_IA_030801b0.jpg" 
+                     alt="Fachada Edificio 5 Pisos" 
+                     class="w-full h-full object-cover opacity-60 transition duration-500">
+                
+                <!-- Capa oscura con botón de activación -->
+                <div id="overlay-controls" class="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-900/50 to-transparent flex flex-col items-center justify-center p-6 text-center">
+                    <span class="px-3 py-1 bg-amber-500/20 text-amber-300 border border-amber-500/30 rounded-full text-xs font-semibold mb-4">
+                        Modelo 3D Optimizado
+                    </span>
+                    <h3 class="text-2xl md:text-3xl font-bold text-white max-w-xl mb-3">
+                        Recorrido Virtual de la Construcción
+                    </h3>
+                    <p class="text-slate-300 text-sm max-w-md mb-6">
+                        Haga clic para activar el motor interactivo. Podrá rotar, acercar y evaluar la estructura desde cualquier ángulo.
+                    </p>
+                    
+                    <div class="flex flex-wrap justify-center gap-4">
+                        <a href="https://edificio-5pisos.vercel.app/" target="_blank" rel="noopener noreferrer"
+                           class="bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold px-6 py-3.5 rounded-xl shadow-lg shadow-amber-500/20 transition transform hover:scale-105 cursor-pointer flex items-center gap-2">
+                            <span>▶ Iniciar Recorrido 3D Interactivo</span>
+                        </a>
+                        
+                        <a href="https://edificio-5pisos.vercel.app/" target="_blank" rel="noopener noreferrer"
+                           class="bg-slate-800/90 hover:bg-slate-700 text-white font-medium px-5 py-3.5 rounded-xl border border-slate-600 transition">
+                            Ver en Pantalla Completa ↗
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Aquí se inyectará el iframe solo al hacer clic -->
+                <div id="iframe-wrapper" class="hidden w-full h-full"></div>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 2: GALERÍA DE RENDERS ARQUITECTÓNICOS -->
+        <section class="space-y-6">
+            <div>
+                <h2 class="text-2xl font-bold text-white">2. Renders de Distribución y Acabados</h2>
+                <p class="text-slate-400 text-sm mt-1">Visualización fotorrealista de planta tipo y terraza social.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- Tarjeta Render 1: Planta Piso 1 -->
+                <div class="glass-panel rounded-2xl overflow-hidden shadow-lg">
+                    <img src="https://edificio-5pisos.vercel.app/assets/aistudio/piso_1_IA_8d73cb96.jpg" 
+                         alt="Distribución Piso 1" 
+                         class="w-full h-64 object-cover hover:scale-105 transition duration-500">
+                    <div class="p-5">
+                        <h3 class="font-bold text-lg text-white">Planta Arquitectónica - Primer Nivel</h3>
+                        <p class="text-slate-400 text-sm mt-1">Distribución funcional con acceso vehicular, zona social integrada, cocina en U y habitaciones independientes.</p>
+                    </div>
+                </div>
+
+                <!-- Tarjeta Render 2: Zona Social Azotea -->
+                <div class="glass-panel rounded-2xl overflow-hidden shadow-lg">
+                    <img src="https://edificio-5pisos.vercel.app/assets/aistudio/azotea_bbq_IA_97236d38.jpg" 
+                         alt="Terraza Social y BBQ" 
+                         class="w-full h-64 object-cover hover:scale-105 transition duration-500">
+                    <div class="p-5">
+                        <h3 class="font-bold text-lg text-white">Terraza Social & Zona BBQ (Azotea)</h3>
+                        <p class="text-slate-400 text-sm mt-1">Espacio recreativo superior equipado con pérgola metálica, sala exterior, estación de asados y jacuzzi.</p>
+                    </div>
+                </div>
+
+                <!-- Tarjeta Render 3: Vista Aérea 1 -->
+                <div class="glass-panel rounded-2xl overflow-hidden shadow-lg">
+                    <img src="https://edificio-5pisos.vercel.app/assets/aistudio/piso_1_aerea_IA_25bba8e5.jpg" 
+                         alt="Vista Aérea Planta" 
+                         class="w-full h-64 object-cover hover:scale-105 transition duration-500">
+                    <div class="p-5">
+                        <h3 class="font-bold text-lg text-white">Perspectiva Aérea de Espacios</h3>
+                        <p class="text-slate-400 text-sm mt-1">Detalle de iluminación natural, circulación interna y relación de áreas privativas.</p>
+                    </div>
+                </div>
+
+                <!-- Tarjeta Render 4: Vista Aérea Complementaria -->
+                <div class="glass-panel rounded-2xl overflow-hidden shadow-lg">
+                    <img src="https://edificio-5pisos.vercel.app/assets/aistudio/piso_1_air_IA_5e99e7f1.jpg" 
+                         alt="Detalle Arquitectónico" 
+                         class="w-full h-64 object-cover hover:scale-105 transition duration-500">
+                    <div class="p-5">
+                        <h3 class="font-bold text-lg text-white">Volumetría y Entorno</h3>
+                        <p class="text-slate-400 text-sm mt-1">Integración de acabados exteriores y aprovechamiento total del lote.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- PIE DE PÁGINA -->
+    <footer class="border-t border-slate-800 py-8 text-center text-slate-500 text-xs">
+        <p>Propuesta Arquitectónica Digital • Visualización Interactiva</p>
+    </footer>
+
+    <!-- SCRIPT DE CARGA BAJO DEMANDA -->
+    <script>
+        function cargarApp3D() {
+            const overlay = document.getElementById('overlay-controls');
+            const cover = document.getElementById('cover-image');
+            const wrapper = document.getElementById('iframe-wrapper');
+
+            // Ocultamos la portada y mostramos el contenedor del 3D
+            overlay.style.display = 'none';
+            cover.style.display = 'none';
+            wrapper.classList.remove('hidden');
+
+            // Inyectamos el iframe dinámicamente para no consumir memoria antes del clic
+            wrapper.innerHTML = `
+                <iframe 
+                    src="https://edificio-5pisos.vercel.app/" 
+                    class="w-full h-full border-0" 
+                    allow="fullscreen; accelerometer; gyroscope"
+                    title="Recorrido 3D Edificio 5 Pisos">
+                </iframe>
+            `;
+        }
+    </script>
+</body>
+</html>
