@@ -311,6 +311,25 @@
       padding: 24px;
     }
 
+    #rotate-tip {
+      display: none;
+      position: fixed;
+      z-index: 45;
+      left: 50%;
+      top: 78px;
+      transform: translateX(-50%);
+      width: min(352px, calc(100vw - 32px));
+      padding: 9px 12px;
+      border: 1px solid rgba(56, 189, 248, 0.35);
+      border-radius: 9px;
+      background: rgba(14, 30, 44, 0.94);
+      color: #dbeafe;
+      text-align: center;
+      font-size: 12px;
+      line-height: 1.35;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.22);
+    }
+
     @media (max-width: 720px) {
       #header-badge {
         top: 10px;
@@ -328,6 +347,9 @@
       #header-meta span:last-child,
       #header-meta span.sep:last-of-type {
         display: none;
+      }
+      #rotate-tip.portrait {
+        display: block;
       }
       #dock-wrapper {
         bottom: max(8px, env(safe-area-inset-bottom));
@@ -377,6 +399,9 @@
 <body>
   <div id="viewport" aria-label="Visor arquitectónico 3D interactivo"></div>
   <div id="labels-layer" aria-hidden="true"></div>
+  <div id="rotate-tip" role="status" aria-live="polite">
+    Gira tu teléfono a horizontal para ver mejor el edificio
+  </div>
 
   <header id="header-badge">
     <h1>Edificio Multifamiliar 5 Niveles</h1>
@@ -507,7 +532,7 @@
 
       var isMobileViewport = window.matchMedia('(max-width: 720px)').matches;
       var camera = new THREE.PerspectiveCamera(isMobileViewport ? 48 : 42, window.innerWidth / window.innerHeight, 0.1, 260);
-      camera.position.set(isMobileViewport ? 21 : 16.5, isMobileViewport ? 15.5 : 13.5, isMobileViewport ? 24 : 18.5);
+      camera.position.set(isMobileViewport ? 26 : 16.5, isMobileViewport ? 18 : 13.5, isMobileViewport ? 31 : 18.5);
 
       var controls = new THREE.OrbitControls(camera, renderer.domElement);
       controls.target.set(0, 5.2, 0.2);
@@ -1619,8 +1644,16 @@
         document.getElementById('active-view-text').textContent = preset.label;
 
         if (moveCamera !== false) {
-          camAnim.posTarget.set(preset.pos[0], preset.pos[1], preset.pos[2]);
           camAnim.lookTarget.set(preset.target[0], preset.target[1], preset.target[2]);
+          if (window.matchMedia('(max-width: 720px)').matches) {
+            camAnim.posTarget.set(
+              camAnim.lookTarget.x + (preset.pos[0] - camAnim.lookTarget.x) * 1.42,
+              camAnim.lookTarget.y + (preset.pos[1] - camAnim.lookTarget.y) * 1.35,
+              camAnim.lookTarget.z + (preset.pos[2] - camAnim.lookTarget.z) * 1.42
+            );
+          } else {
+            camAnim.posTarget.set(preset.pos[0], preset.pos[1], preset.pos[2]);
+          }
           camAnim.active = true;
         }
       }
@@ -1669,6 +1702,16 @@
         dockToggle.setAttribute('aria-expanded', 'false');
         dockIcon.innerHTML = '&#9652;';
         dockLabel.textContent = 'Mostrar controles';
+      }
+      var rotateTip = document.getElementById('rotate-tip');
+      if (rotateTip) {
+        rotateTip.classList.toggle(
+          'portrait',
+          window.matchMedia('(max-width: 720px)').matches && window.innerHeight > window.innerWidth
+        );
+        window.setTimeout(function () {
+          rotateTip.classList.remove('portrait');
+        }, 7000);
       }
       window.addEventListener('keydown', function (e) {
         if (e.key === 'h' || e.key === 'H') toggleDock();
@@ -1793,6 +1836,10 @@
         camera.updateProjectionMatrix();
         renderer.setSize(window.innerWidth, window.innerHeight);
         renderer.setPixelRatio(isSoftwareGl ? 1 : Math.min(window.devicePixelRatio || 1, 2));
+        var rotateTip = document.getElementById('rotate-tip');
+        if (rotateTip) {
+          rotateTip.classList.toggle('portrait', mobileViewport && window.innerHeight > window.innerWidth);
+        }
       });
 
       // Inicializar vista por defecto
